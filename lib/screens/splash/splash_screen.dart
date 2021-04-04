@@ -3,6 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_instagram/blocs/blocs.dart';
 import 'package:flutter_instagram/screens/screen.dart';
 
+/// When launching the App, This screen checks if the user is currently logged in.
+/// If yes, it displays the Navigation Screen.
+/// Else it displays a login Screen.
+
 class SplashScreen extends StatelessWidget {
   static const String routeName = '/splash';
 

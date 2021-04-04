@@ -17,7 +17,8 @@ class AuthRepository extends BaseAuthRepository{
         _firebaseAuth = firebaseAuth ?? auth.FirebaseAuth.instance;
 
   @override
-  /// uses 'userChanges()' to provide real time events on all user changes. Hover over it for more information
+  /// uses 'userChanges()' to provide real time events on all user changes in Firebase.
+  // Hover over 'userChanges()'  for more information
   Stream<auth.User> get user => _firebaseAuth.userChanges();
 
   @override

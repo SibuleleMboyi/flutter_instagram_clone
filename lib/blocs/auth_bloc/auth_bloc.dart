@@ -1,0 +1,49 @@
+import 'dart:async';
+
+import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
+import 'package:flutter_instagram/repositories/repositories.dart';
+import 'package:meta/meta.dart';
+
+part 'auth_event.dart';
+part 'auth_state.dart';
+
+ // AuthBloc is dependent on AuthRepository
+ // This is so, so we can access AuthRepository methods such as logOut(), user().
+class AuthBloc extends Bloc<AuthEvent, AuthState> {
+  final AuthRepository _authRepository;
+  StreamSubscription<auth.User> _userSubscription;
+
+  AuthBloc({
+    @required AuthRepository authRepository,
+  }) : _authRepository = authRepository,
+        super(AuthState.unknown()){
+    _userSubscription = _authRepository.user.listen((user) => add(AuthUserChanged(user: user)));
+  }
+
+  @override
+  Future<void> close() {
+    // '?' is for, if the user subscription is null for whatever reason, we don't cancel null, the App will crush.
+    _userSubscription?.cancel();
+    return super.close();
+  }
+
+  @override
+  Stream<AuthState> mapEventToState( AuthEvent event) async* {
+
+    if(event is AuthUserChanged){
+      //AuthUserChanged can't be evoked from the UI, so we call it by listening to the stream 'user'
+      yield* _mapAuthUserChangedToState(event);
+
+    } else if (event is AuthLogoutRequested){
+      //AuthLogoutRequested is called from the UI when the user taps the LogOut Button
+      await _authRepository.logOut();
+    }
+  }
+  Stream<AuthState> _mapAuthUserChangedToState(AuthUserChanged event) async* {
+    yield event.user != null
+        ? AuthState.authenticated(user: event.user)
+        : AuthState.unauthenticated();
+  }
+}

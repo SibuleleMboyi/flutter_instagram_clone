@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_instagram/repositories/auth/auth_repository.dart';
 import 'package:flutter_instagram/screens/login/cubic/login_cubit.dart';
 import 'package:flutter_instagram/screens/screen.dart';
+import 'package:flutter_instagram/widgets/widgets.dart';
 
 
 class LoginScreen extends StatelessWidget {
@@ -36,11 +37,7 @@ class LoginScreen extends StatelessWidget {
             if(state.status == LoginStatus.error){
               showDialog(
                 context: context,
-                builder: (context) =>
-                    AlertDialog(
-                        title: Text("Error"),
-                        content: Text(state.failure.message)
-                    ),
+                builder: (context) => ErrorDialog(content : state.failure.message),
               );
             }
           },

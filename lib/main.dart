@@ -29,6 +29,7 @@ class MyApp extends StatelessWidget {
         providers: [
           BlocProvider<AuthBloc>(create: (context) => AuthBloc(authRepository: context.read<AuthRepository>())),
         ],
+        /// This is the root of this App
         child: MaterialApp(
           title: 'Flutter Instagram',
           debugShowCheckedModeBanner: false,

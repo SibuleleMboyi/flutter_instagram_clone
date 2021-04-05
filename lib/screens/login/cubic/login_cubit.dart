@@ -31,8 +31,9 @@ class LoginCubit extends Cubit<LoginState> {
 
   void logInWithCredentials() async{
 
+    /// ensures that this function does not fire while status in currently submitting
     if(!state.isFormValid || state.status == LoginStatus.submitting)
-      return; /// ensures that this function does not fire while status in currently submitting
+      return;
 
     emit(state.copyWith(status: LoginStatus.submitting));
 

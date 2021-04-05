@@ -35,6 +35,14 @@ class CustomRouter{
     }
   }
 
+  /*static Route onGenerateNestedRoute(RouteSettings settings){
+    print('Nested Route: ${settings.name}');
+    switch(settings.name){
+      default:
+        return _errorRoute();
+    }
+  }*/
+
   /// This method is private because we won't be accessing outside this class, 'CustomRouter'.
   static Route _errorRoute(){
     return MaterialPageRoute(

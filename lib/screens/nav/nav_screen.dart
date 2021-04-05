@@ -21,6 +21,15 @@ class NavScreen extends StatelessWidget {
     );
   }
 
+  /// These keys are used to maintain the current navigator state for each of the navigator items.
+  final Map<BottomNavItem, GlobalKey<NavigatorState>> navigatorKeys = {
+    BottomNavItem.feed: GlobalKey<NavigatorState>(),
+    BottomNavItem.search: GlobalKey<NavigatorState>(),
+    BottomNavItem.create: GlobalKey<NavigatorState>(),
+    BottomNavItem.notifications: GlobalKey<NavigatorState>(),
+    BottomNavItem.profile: GlobalKey<NavigatorState>(),
+  };
+
   final Map<BottomNavItem, IconData> items = const {
     BottomNavItem.feed: Icons.home,
     BottomNavItem.search: Icons.search,
@@ -37,17 +46,62 @@ class NavScreen extends StatelessWidget {
       child: BlocBuilder<BottomNavBarCubit, BottomNavBarState>(
         builder: (context, state){
           return Scaffold(
-            body: Text("Nav Screen"),
+            /// We use the Stack Widget so we can be able to render different screens,
+            /// and making sure we save the current navigation state for each of the screens
+            ///
+            body: Stack(
+              children: items.map((item, _) => MapEntry(
+                item,
+                _buildOffStageNavigator(
+                    item,
+                    item == state.selectedItem),
+              )).values.toList(),
+
+            ),
             bottomNavigationBar: BottomNavBar(
               items: items,
               selectedItem: state.selectedItem,
               onTap: (index) {
                 final selectedItem = BottomNavItem.values[index];
-                context.read<BottomNavBarCubit>().updateSelectedItem(selectedItem);
+
+                _selectBottomNavItem(
+                    context,
+                    selectedItem,
+                    selectedItem == state.selectedItem
+                );
               },
             ),
           );
         },
+      ),
+    );
+  }
+
+  void _selectBottomNavItem(BuildContext context, BottomNavItem selectedItem, bool isSameItem){
+
+    if(isSameItem){
+
+      /// e.g if while on the feed screen, the user routes by clicking a friend's post,
+      /// goes to her profile, and check other posts on this person's profile down to the comments of any post,
+      /// if the user then tabs the feed screen icon, all the other navigated screens will be popped up from the navigation stack,
+      /// and the user returns to the feed screen.
+
+      navigatorKeys[selectedItem].currentState.popUntil((route) => route.isFirst);
+    }
+
+    context.read<BottomNavBarCubit>().updateSelectedItem(selectedItem);
+
+  }
+
+  Widget _buildOffStageNavigator(BottomNavItem currentItem, bool isSelected){
+
+    /// 'Offstage' Creates a widget that visually hides its child.
+    return Offstage(
+      // Only shows the item that is selected
+      offstage: !isSelected,
+      child: TabNavigator(
+        navigatorKey: navigatorKeys[currentItem],
+        item: currentItem,
       ),
     );
   }

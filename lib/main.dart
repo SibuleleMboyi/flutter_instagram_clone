@@ -7,6 +7,7 @@ import 'package:flutter_instagram/blocs/auth_bloc/auth_bloc.dart';
 import 'package:flutter_instagram/blocs/simple_bloc_observer.dart';
 import 'package:flutter_instagram/config/custom_router/custom_router.dart';
 import 'package:flutter_instagram/repositories/auth/auth_repository.dart';
+import 'package:flutter_instagram/repositories/user/user_repository.dart';
 import 'package:flutter_instagram/screens/screen.dart';
 
 void main() async {
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
         /// The providers can now be accessed through the App
         /// context.read<AuthRepository>()   is used to access contents of AuthRepository
         RepositoryProvider<AuthRepository>(create: (_) => AuthRepository()),
+        RepositoryProvider<UserRepository>(create: (_) => UserRepository()),
 
       ],
       child: MultiBlocProvider(

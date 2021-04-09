@@ -54,7 +54,8 @@ class NavScreen extends StatelessWidget {
                 item,
                 _buildOffStageNavigator(
                     item,
-                    item == state.selectedItem),
+                    item == state.selectedItem
+                ),
               )).values.toList(),
 
             ),

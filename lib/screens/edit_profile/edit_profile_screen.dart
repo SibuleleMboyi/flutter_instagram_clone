@@ -11,7 +11,7 @@ import 'package:flutter_instagram/widgets/widgets.dart';
 import 'package:image_cropper/image_cropper.dart';
 
 
-//context from 'Profile Button'
+//context from 'Profile Button' class
 class EditProfileScreenArgs{
   final BuildContext context;
 
@@ -31,7 +31,7 @@ class EditProfileScreen extends StatelessWidget {
             create: (_) => EditProfileCubit(
                 userRepository: context.read<UserRepository>(),
                 storageRepository: context.read<StorageRepository>(),
-                //'profileBloc' uses 'context' from  'ProfileButton' inside profile screen
+                //'profileBloc' uses 'context' from  'ProfileButton' class  inside profile screen
                 profileBloc: args.context.read<ProfileBloc>(),
             ),
           child: EditProfileScreen(user: args.context.read<ProfileBloc>().state.user),
@@ -137,7 +137,7 @@ class EditProfileScreen extends StatelessWidget {
   }
 
   void _submitForm(BuildContext context, bool isSubmitting){
-    if(_formKey.currentState.validate() && !isSubmitting){  /// isSubmitting means the user has login in progress
+    if(_formKey.currentState.validate() && !isSubmitting){
       context.read<EditProfileCubit>().submit();
     }
   }

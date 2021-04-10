@@ -35,13 +35,17 @@ class CustomRouter{
     }
   }
 
-  /*static Route onGenerateNestedRoute(RouteSettings settings){
+   /// maintains navigator stack
+  static Route onGenerateNestedRoute(RouteSettings settings){
     print('Nested Route: ${settings.name}');
     switch(settings.name){
+      case EditProfileScreen.routeName:
+        return EditProfileScreen.route(args: settings.arguments);
+
       default:
         return _errorRoute();
     }
-  }*/
+  }
 
   /// This method is private because we won't be accessing outside this class, 'CustomRouter'.
   static Route _errorRoute(){

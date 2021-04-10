@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_instagram/blocs/auth_bloc/auth_bloc.dart';
+import 'package:flutter_instagram/config/custom_router/custom_router.dart';
 import 'package:flutter_instagram/enums/enum.dart';
 import 'package:flutter_instagram/repositories/repositories.dart';
 import 'package:flutter_instagram/screens/profile/bloc/profile_bloc.dart';
@@ -36,7 +37,7 @@ class TabNavigator extends StatelessWidget {
         ];
       },
 
-      //onGenerateRoute: CustomRouter.onGenerateNestedRoute(settings),
+      onGenerateRoute: CustomRouter.onGenerateNestedRoute,
     );
   }
 

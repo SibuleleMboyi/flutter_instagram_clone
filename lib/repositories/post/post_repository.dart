@@ -28,8 +28,8 @@ class PostRepository extends BasePostRepository{
   Stream<List<Future<Post>>> getUserPosts({@required String userId}) {
     final authorRef = _firebaseFirestore.collection(Paths.users).doc(userId);
     return _firebaseFirestore.collection(Paths.posts)
-        .where('author', isEqualTo: authorRef)
-        .orderBy('date', descending: true)
+        .where('author', isEqualTo: authorRef) // because we are querying over 2 fields, 'author' and 'date',
+        .orderBy('date', descending: true)     //we need to go our Firebase Console and add a Company Query.
         .snapshots()
         .map((snap) => snap.docs.map((doc) => Post.fromDocument(doc)).toList());
   }

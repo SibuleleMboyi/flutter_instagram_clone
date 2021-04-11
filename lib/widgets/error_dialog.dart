@@ -34,6 +34,7 @@ class ErrorDialog extends StatelessWidget {
   AlertDialog _showAndroidDialog(BuildContext context){
     return AlertDialog(
       title: Text(title),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
       content: Text(content),
       actions: [
         FlatButton(

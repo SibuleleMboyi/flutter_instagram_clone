@@ -42,6 +42,7 @@ class User extends Equatable{
     bio
   ];
 
+  /// Allows us to update some values of a class without losing information about other values that are not getting updated
   User copyWith({
     String id,
     String username,
@@ -62,7 +63,7 @@ class User extends Equatable{
 
     );
   }
-  /// converts user model into a JSON that firebase can take and create a document out of
+  /// converts user model into a JSON that firebase can take and create a document out of it
   Map<String, dynamic> toDocument(){
     return {
       'username': username,
@@ -74,7 +75,7 @@ class User extends Equatable{
     };
   }
 
-  /// takes a document snapshot from firebase and converts it into the user madel
+  /// returns a user document snapshot from firebase and converts it into the user madel
  factory User.fromDocument(DocumentSnapshot doc){
     if(doc == null) return null;
     final data = doc.data();

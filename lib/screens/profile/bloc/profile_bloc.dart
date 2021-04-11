@@ -23,9 +23,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         super(ProfileState.initial());
 
   @override
-  Stream<ProfileState> mapEventToState(
-    ProfileEvent event,
-  ) async* {
+  Stream<ProfileState> mapEventToState(ProfileEvent event) async* {
     if(event is ProfileLoadUser){
       yield* _mapProfileLoadUserToState(event);
     }

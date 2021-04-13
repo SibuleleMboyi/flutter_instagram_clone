@@ -4,6 +4,7 @@ import 'package:flutter_instagram/blocs/auth_bloc/auth_bloc.dart';
 import 'package:flutter_instagram/config/custom_router/custom_router.dart';
 import 'package:flutter_instagram/enums/enum.dart';
 import 'package:flutter_instagram/repositories/repositories.dart';
+import 'package:flutter_instagram/screens/create_post/cubit/create_post_cubit.dart';
 import 'package:flutter_instagram/screens/profile/bloc/profile_bloc.dart';
 import 'package:flutter_instagram/screens/screen.dart';
 
@@ -56,7 +57,14 @@ class TabNavigator extends StatelessWidget {
         return SearchScreen();
 
       case BottomNavItem.create:
-        return CreatePostScreen();
+        return BlocProvider<CreatePostCubit>(
+          create: (content) => CreatePostCubit(
+            postRepository: context.read<PostRepository>(),
+            storageRepository: context.read<StorageRepository>(),
+            authBloc: context.read<AuthBloc>(),
+          ),
+          child: CreatePostScreen(),
+        );
 
       case BottomNavItem.notifications:
         return NotificationsScreen();

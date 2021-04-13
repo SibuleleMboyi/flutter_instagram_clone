@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_instagram/helpers/helpers.dart';
@@ -124,6 +122,7 @@ class EditProfileScreen extends StatelessWidget {
     );
   }
 
+  // these functions are re-used, therefore they must be put under helper functions
   void _selectProfileImage(BuildContext context) async{
     final pickedFile = await ImageHelper.pickImageFromGallery(
         context: context,
@@ -132,7 +131,7 @@ class EditProfileScreen extends StatelessWidget {
     );
 
     if(pickedFile != null){
-      context.read<EditProfileCubit>().profileImageChanged(File(pickedFile.path));
+      context.read<EditProfileCubit>().profileImageChanged(pickedFile);
     }
   }
 

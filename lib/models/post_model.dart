@@ -51,7 +51,7 @@ class Post extends Equatable{
       // 'author' is mapped to  users/userId, e.g  author: users/12W2322.
       // 'author' is a reference to a user document in the users collection.
       // 'id' not passed because we allow Firebase to automatically create a unique postId on post upload into Firebase.
-      'author': FirebaseFirestore.instance.collection(Paths.users).doc(author.id),
+      'author': FirebaseFirestore.instance.collection(Paths.users).doc(author.id), // NOTE: try 'author': user's id
       'imageUrl': imageUrl,
       'caption': caption,
       'likes': likes,

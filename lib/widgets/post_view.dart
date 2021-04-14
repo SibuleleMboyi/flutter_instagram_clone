@@ -22,7 +22,7 @@ class PostView extends StatelessWidget {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(18.0),
           child: GestureDetector(
             onTap: () => Navigator.of(context).pushNamed(
               ProfileScreen.routeName,
@@ -57,6 +57,7 @@ class PostView extends StatelessWidget {
             height: MediaQuery.of(context).size.height / 2.25,
           ),
         ),
+
         Row(
           children: [
             IconButton(
@@ -69,39 +70,43 @@ class PostView extends StatelessWidget {
               icon: const Icon(Icons.comment_outlined),
               onPressed: (){},
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(16.0, 0, 16.0, 8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text('${post.likes} likes',
-                    style: const TextStyle(fontWeight: FontWeight.w600),
-                  ),
-                  const SizedBox(height: 4.0),
-                  Text.rich(
-                    TextSpan(
-                      children: [
-                        TextSpan(
-                          text: post.author.username,
-                          style: const TextStyle(fontWeight: FontWeight.w600),
-                        ),
-                        const TextSpan(text: ' '),
-                        TextSpan(text: post.caption),
-                      ]
-                    )
-                  ),
-                  const SizedBox(height: 4.0),
-                  Text(
-                    post.date.timeAgo(),
-                    style: TextStyle(
-                      color: Colors.grey[600],
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
-              ),),
           ],
         ),
+
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16.0, 0, 16.0, 8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text('${post.likes} likes',
+                style: const TextStyle(fontWeight: FontWeight.w600),
+              ),
+              const SizedBox(height: 4.0),
+              Text.rich(
+                TextSpan(
+                    children: [
+                      TextSpan(
+                        text: post.author.username,
+                        style: const TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                      const TextSpan(text: ' '),
+                      TextSpan(text: post.caption),
+                    ]
+                ),
+              ),
+              const SizedBox(height: 4.0),
+              Text(
+                post.date.timeAgo(),
+                style: TextStyle(
+                  color: Colors.grey[600],
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(height: 10.0),
+        Divider(),
       ],
     );
   }

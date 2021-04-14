@@ -75,7 +75,7 @@ class Post extends Equatable{
             imageUrl: data['imageUrl'] ?? '',
             caption: data['caption'] ?? '',
             likes: (data['likes'] ?? 0).toInt(),
-            date: (data['date'] as Timestamp) ?.toDate(), //'?' makes sure that data[date] is not null
+            date: (data['date'] as Timestamp)?.toDate(), //'?' makes sure that data[date] is not null
         );
       }
     }

@@ -35,7 +35,7 @@ class ProfileButton extends StatelessWidget {
       color: isFollowing ? Colors.grey[300] :Theme.of(context).primaryColor,
       textColor: isFollowing ? Colors.black : Colors.white,
       child: Text(
-        isFollowing ? 'follow' : 'unfollow',
+        isFollowing ? 'unfollow' : 'follow',
         style: TextStyle(fontSize: 16.0),
       ),
     );

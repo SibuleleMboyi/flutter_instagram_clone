@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_instagram/models/models.dart';
 import 'package:flutter_instagram/screens/profile/profile_screen.dart';
+import 'package:flutter_instagram/screens/screen.dart';
 import 'package:flutter_instagram/widgets/widgets.dart';
 import 'package:flutter_instagram/extensions/extensions.dart';
 
@@ -72,7 +73,10 @@ class PostView extends StatelessWidget {
             ),
             IconButton(
               icon: const Icon(Icons.comment_outlined),
-              onPressed: (){},
+              onPressed: ()=> Navigator.of(context).pushNamed(
+                CommentScreen.routeName,
+                arguments: CommentsScreenArgs(post: post),
+              ),
             ),
           ],
         ),

@@ -10,3 +10,4 @@ export 'create_post/create_post_screen.dart';
 export 'notifications/notifications.dart';
 export 'profile/profile_screen.dart';
 export 'edit_profile/edit_profile_screen.dart';
+export 'comments/comments_screen.dart';

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_instagram/blocs/auth_bloc/auth_bloc.dart';
+import 'package:flutter_instagram/cubits/cubit.dart';
 import 'package:flutter_instagram/repositories/repositories.dart';
 import 'package:flutter_instagram/screens/profile/bloc/profile_bloc.dart';
 import 'package:flutter_instagram/screens/profile/widgets/widgets.dart';
@@ -26,6 +27,7 @@ class ProfileScreen extends StatefulWidget {
           create: (_) => ProfileBloc(
               userRepository: context.read<UserRepository>(),
               postRepository: context.read<PostRepository>(),
+              likedPostsCubit: context.read<LikedPostsCubit>(),
               authBloc: context.read<AuthBloc>(),
           )
             ..add(ProfileLoadUser(userId: args.userId)),
@@ -76,7 +78,10 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
               if(state.isCurrentUser)
                 IconButton(
                   icon: const Icon(Icons.exit_to_app),
-                  onPressed: ()=> context.read<AuthBloc>().add(AuthLogoutRequested()),
+                  onPressed: () {
+                    context.read<AuthBloc>().add(AuthLogoutRequested());
+                    context.read<LikedPostsCubit>().clearAllLiPosts();
+                  },
                 ),
 
             ]
@@ -167,7 +172,21 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
               ): SliverList(
                 delegate: SliverChildBuilderDelegate((context, index){
                   final post = state.posts[index];
-                  return PostView(post: post, isLiked: false);
+                  final likedPostsState = context.watch<LikedPostsCubit>().state;
+                  final isLiked = likedPostsState.likedPostIds.contains(post.id);
+
+
+                  return PostView(
+                    post: post,
+                    isLiked: isLiked,
+                    onLike: (){
+                      if(isLiked){
+                        context.read<LikedPostsCubit>().unlikePost(post: post);
+                      } else{
+                        context.read<LikedPostsCubit>().likePost(post: post);
+                      }
+                    },
+                  );
                 },
                   childCount: state.posts.length,
                 ),

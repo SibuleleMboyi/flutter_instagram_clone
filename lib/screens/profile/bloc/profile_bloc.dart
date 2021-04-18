@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_instagram/blocs/auth_bloc/auth_bloc.dart';
+import 'package:flutter_instagram/cubits/cubit.dart';
 import 'package:flutter_instagram/models/failure_model.dart';
 import 'package:flutter_instagram/models/models.dart';
 import 'package:flutter_instagram/models/user_model.dart';
@@ -16,6 +17,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final UserRepository _userRepository;
   final PostRepository _postRepository;
   final AuthBloc _authBloc; //we want get the Current logged in user and compare it with the person view the profile
+  final LikedPostsCubit _likedPostsCubit;
 
 
   StreamSubscription<List<Future<Post>>> _postsSubscription;
@@ -24,9 +26,11 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     @required  UserRepository userRepository,
     @required  PostRepository postRepository,
     @required  AuthBloc authBloc,
+    @required LikedPostsCubit likedPostsCubit,
   }) :  _userRepository = userRepository,
         _postRepository = postRepository,
         _authBloc = authBloc,
+        _likedPostsCubit = likedPostsCubit,
         super(ProfileState.initial());
 
   @override
@@ -90,6 +94,12 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
   Stream<ProfileState> _mapProfileUpdatePostsToState(ProfileUpdatePosts event) async*{
     yield state.copyWith(posts: event.posts);
+    final likedPostIds = await _postRepository.getLikedPostIds(
+      userId: _authBloc.state.user.uid,
+      posts: event.posts,
+    );
+
+    _likedPostsCubit.updateLikedPosts(postIds: likedPostIds);
   }
 
   Stream<ProfileState> _mapProfileFollowUserToState() async*{

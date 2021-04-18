@@ -25,6 +25,24 @@ class PostRepository extends BasePostRepository{
   }
 
   @override
+  void createLike({@required Post post, @required String userId}) {
+    // we not incrementing number of likes in this way 'likes': post.likes + 1,
+    // Mainly because if users like the sma post at the sametime, Firebase will take the current value
+    // of 'like' and increment it only for one user.
+
+    _firebaseFirestore.collection(Paths.posts)
+        .doc(post.id)
+        .update({'likes': FieldValue.increment(1)});
+
+    _firebaseFirestore.collection(Paths.likes)
+        .doc(post.id)
+        .collection(Paths.postLikes)
+        .doc(userId)
+        .set({});
+
+  }
+
+  @override
   Stream<List<Future<Post>>> getUserPosts({@required String userId}) {
     final authorRef = _firebaseFirestore.collection(Paths.users).doc(userId);
     return _firebaseFirestore.collection(Paths.posts)
@@ -80,5 +98,36 @@ class PostRepository extends BasePostRepository{
   }
 
 
+  /// From each fetched batch posts, this method highlights the posts that have been already liked by a user
+  @override
+  Future<Set<String>> getLikedPostIds({@required String userId, @required List<Post> posts}) async{
+    final postIds = <String>{};
+    for(final post in posts){
+      final likeDoc = await _firebaseFirestore.collection(Paths.likes)
+          .doc(post.id)
+          .collection(Paths.postLikes)
+          .doc(userId)
+          .get();
+
+      if(likeDoc.exists){
+        postIds.add(post.id);
+      }
+    }
+
+    return postIds;
+  }
+
+  @override
+  void deleteLike({String postId, String userId}) {
+    _firebaseFirestore.collection(Paths.posts)
+        .doc(postId)
+        .update({'likes': FieldValue.increment(-1)}); // since there is no 'decrement'
+
+    _firebaseFirestore.collection(Paths.likes)
+        .doc(postId)
+        .collection(Paths.postLikes)
+        .doc(userId)
+        .delete();
+  }
 
 }
